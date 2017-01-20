@@ -1,5 +1,5 @@
 
-SUBDIRS = demo so
+SUBDIRS = so demo kb
 
 all: ${SUBDIRS}
 all: TARGET =
