@@ -1,14 +1,14 @@
 
-PROGRAM =
+PROGRAM = fbdemo
 SRCDIR = ../..
 
 CPPFLAGS =
 CFLAGS = -O0 -ggdb -W -Wall -Werror
 
 LDFLAGS =
-LIBS =
-HEADERS =
-OBJECTS =
+LIBS = -lm
+HEADERS = fb.h
+OBJECTS = fb.o fbdemo.o
 
 SRC = ${HEADERS} ${OBJECTS:%.o=%.c}
 

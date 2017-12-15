@@ -1,14 +1,14 @@
 
-PROGRAM = libfb.so
+PROGRAM = kb
 SRCDIR = ../..
 
-CPPFLAGS =
-CFLAGS = -O0 -ggdb -W -Wall -Werror -fpic
+CPPFLAGS = -I.
+CFLAGS = -O0 -ggdb -W -Wall -Werror
 
-LDFLAGS = -fPIC -shared
+LDFLAGS =
 LIBS =
 HEADERS = fb.h
-OBJECTS = fb.o
+OBJECTS = fb.o kb.o
 
 SRC = ${HEADERS} ${OBJECTS:%.o=%.c}
 
