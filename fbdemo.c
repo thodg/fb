@@ -160,30 +160,11 @@ s_t s_cos (s_t a)
 static void draw_ortho10_w (struct fb *fb)
 {
   unsigned w = fb->w;
-  unsigned h = fb->h;
   unsigned w2 = fb->w / 2;
   unsigned h2 = fb->h / 2;
   unsigned i = 10;
   fb_move_to(fb, (s_xy) {0, h2});
   fb_line_to(fb, (s_xy) {w, h2});
-  while (i < h / 2) {
-    fb_move_to(fb, (s_xy) {w2 - 5, h2 - i});
-    fb_line_to(fb, (s_xy) {w2 + 5, h2 - i});
-    fb_move_to(fb, (s_xy) {w2 - 5, h2 + i});
-    fb_line_to(fb, (s_xy) {w2 + 5, h2 + i});
-    i = i + 10;
-  }
-}
-
-static void draw_ortho10_h (struct fb *fb)
-{
-  unsigned w = fb->w;
-  unsigned h = fb->h;
-  unsigned w2 = fb->w / 2;
-  unsigned h2 = fb->h / 2;
-  unsigned i = 10;
-  fb_move_to(fb, (s_xy) {w2, 0});
-  fb_line_to(fb, (s_xy) {w2, h});
   while (i < w / 2) {
     fb_move_to(fb, (s_xy) {w2 - i, h2 - 5});
     fb_line_to(fb, (s_xy) {w2 - i, h2 + 5});
@@ -193,12 +174,48 @@ static void draw_ortho10_h (struct fb *fb)
   }
 }
 
+static void draw_ortho10_h (struct fb *fb)
+{
+  unsigned h = fb->h;
+  unsigned w2 = fb->w / 2;
+  unsigned h2 = fb->h / 2;
+  unsigned i = 10;
+  fb_move_to(fb, (s_xy) {w2, 0});
+  fb_line_to(fb, (s_xy) {w2, h});
+  while (i < h / 2) {
+    fb_move_to(fb, (s_xy) {w2 - 5, h2 - i});
+    fb_line_to(fb, (s_xy) {w2 + 5, h2 - i});
+    fb_move_to(fb, (s_xy) {w2 - 5, h2 + i});
+    fb_line_to(fb, (s_xy) {w2 + 5, h2 + i});
+    i = i + 10;
+  }
+}
+
 static void draw_ortho10 (struct fb *fb)
 {
-  fb_color(fb, (s_rgb) {255, 0, 0});
+  fb_color(fb, rgb(255, 0, 0));
   draw_ortho10_w(fb);
-  fb_color(fb, (s_rgb) {0, 255, 0});
+  fb_color(fb, rgb(0, 255, 0));
   draw_ortho10_h(fb);
+}
+
+static void draw_sin (struct fb *fb)
+{
+  unsigned w = fb->w;
+  unsigned w2 = fb->w / 2;
+  unsigned h2 = fb->h / 2;
+  unsigned zw = 31.4159 * A;
+  unsigned zh = 10 * A;
+  fb_color(fb, rgb(255, 255, 255));
+  unsigned x = 0;
+  s_t cx = (x - w2) * zw / w2;
+  s_t sin_cx = s_sin(cx) * zh / h2;
+  fb_move_to(fb, xy(cx * w2 / zw, sin_cx * h2 / zh));
+  while (x++ < w) {
+    cx = (x - w2) * zw / w2;
+    sin_cx = s_sin(cx) * zh / h2;
+    fb_line_to(fb, xy(cx * w2 / zw, sin_cx * h2 / zh));
+  }
 }
 
 /*
@@ -403,6 +420,7 @@ static void draw (struct fb *fb)
   //checker_scene(fb);
   fb_clear(fb);
   draw_ortho10(fb);
+  draw_sin(fb);
   fb_swap(fb);
 }
 
